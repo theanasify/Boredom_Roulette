@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BOREDOM ROULETTE - Spin & Cure Boredom</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <meta name="description" content="Feeling bored? Spin the wheel and get a random fun activity to do right now!">
+    <meta property="og:image" content="https://example.com/spinning-wheel.png">
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+        body {
+    background: #FFBF00; 
+    background-size: cover;
+    background-position: center;
+    color: #222;
+    text-align: center;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+        }
+
+
+        h1 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 50px;
+            text-transform: uppercase;
+            color: #FF006E;
+            text-shadow: 3px 3px #FFD700;
+        }
+    
+     h2{
+            
+            color: black;
+        }
+
+        .wheel-container {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px 0;
+        }
+
+        .wheel {
+            width: 320px;
+            height: 320px;
+            border-radius: 50%;
+            background: conic-gradient(
+                #FF595E 0deg 36deg,
+                #FF924C 36deg 72deg,
+                #FFCA3A 72deg 108deg,
+                #8AC926 108deg 144deg,
+                #1982C4 144deg 180deg,
+                #6A4C93 180deg 216deg,
+                #FF006E 216deg 252deg,
+                #FFD700 252deg 288deg,
+                #06D6A0 288deg 324deg,
+                #118AB2 324deg 360deg
+            );
+            transition: transform 3s ease-out;
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+            position: relative;
+        }
+
+        .emoji {
+            font-size: 28px;
+            position: absolute;
+        }
+
+        /* Rearranged emoji positions for a balanced look */
+        .emoji:nth-child(1) { top: 10%; left: 50%; transform: translateX(-50%); } /* 🎨 */
+        .emoji:nth-child(2) { top: 20%; left: 75%; } /* 🎮 */
+        .emoji:nth-child(3) { top: 40%; left: 80%; } /* 🎵 */
+        .emoji:nth-child(4) { top: 65%; left: 75%; } /* 📚 */
+        .emoji:nth-child(5) { top: 75%; left: 60%; transform: translateX(-50%); } /* 🚀 */
+        .emoji:nth-child(6) { top: 70%; left: 25%; } /* 🧩 */
+        .emoji:nth-child(7) { top: 50%; left: 10%; } /* 🏋️ */
+        .emoji:nth-child(8) { top: 23%; left: 19%; } /* 💻 */
+
+        .pointer {
+            width: 30px;
+            height: 40px;
+            background: red;
+            clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .result {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-top: 20px;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .ad-space {
+            background: white;
+            padding: 10px;
+            margin-top: 20px;
+            width: 90%;
+            max-width: 300px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 5px rgba(0,0,0,0.1);
+        }
+
+        .tutorial-link {
+            display: none;
+            margin-top: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            color: blue;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 35px;
+            }
+            .wheel {
+                width: 280px;
+                height: 280px;
+            }
+            .emoji {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+   
+<div id="preloader" class="fixed top-0 left-0 w-full h-full flex flex-col items-center justify-center bg-[#FFBF00] text-white z-50">
+    <h2 class="text-3xl font-bold font-['Press Start 2P']">Loading...</h2>
+    <div class="mt-4 animate-spin text-6xl">🎡</div>
+</div>
+    <script>
+    
+    window.onload = function () {
+        setTimeout(() => {
+            document.getElementById('preloader').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('preloader').style.display = 'none';
+            }, 500);
+        }, 1500);
+    };
+</script>
+
+
+    <h1>BOREDOM ROULETTE</h1>
+    <h5 class="mb-4">Spin the wheel to cure boredom!</h5>
+
+    <div class="wheel-container">
+        <div class="wheel" id="wheel">
+            <span class="emoji">🎨</span>
+            <span class="emoji">🎮</span>
+            <span class="emoji">🎵</span>
+            <span class="emoji">📚</span>
+            <span class="emoji">🚀</span>
+            <span class="emoji">🧩</span>
+            <span class="emoji">🏋️</span>
+            <span class="emoji">💻</span>
+        </div>
+        <div class="pointer"></div>
+    </div>
+
+    <button id="spinBtn" class="mt-6 px-6 py-3 bg-black text-white text-lg rounded-full hover:bg-gray-800">SPIN NOW</button>
+
+    <div id="result" class="result mt-6"></div>
+    <a id="tutorial" class="tutorial-link" target="_blank">Try Now →</a>
+
+    <!-- Ad Space -->
+    <div class="ad-space mt-6">
+        <p>Adsterra / Google AdSense Ad Here</p>
+    </div>
+    
+    <section class="text-center mt-8">
+    <h2 class="text-3xl font-bold text-gray-900">📺 Bored? Try This! 🎥</h2>
+    <p class="text-gray-600 mt-2 text-lg">Watch these awesome videos and beat boredom instantly!</p>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+        <a href="https://www.youtube.com/watch?v=QrlqGg05LBs" target="_blank" class="bg-gray-100 p-4 rounded-lg shadow-md hover:bg-gray-200">
+            🎭 The Most Satisfying Video Ever
+        </a>
+        <a href="https://www.youtube.com/watch?v=wKUk_8myA8g" target="_blank" class="bg-gray-100 p-4 rounded-lg shadow-md hover:bg-gray-200">
+            🧠 Genius Life Hacks
+        </a>
+        <a href="https://www.youtube.com/watch?v=vcJ1a7_Wj9M" target="_blank" class="bg-gray-100 p-4 rounded-lg shadow-md hover:bg-gray-200">
+            🤣 Try Not to Laugh Challenge
+        </a>
+        <a href="https://www.youtube.com/watch?v=fh1JD7F22hY" target="_blank" class="bg-gray-100 p-4 rounded-lg shadow-md hover:bg-gray-200">
+            🚀 Crazy Science Experiments
+        </a>
+        <a href="https://www.youtube.com/watch?v=3xpyU_c8nKc" target="_blank" class="bg-gray-100 p-4 rounded-lg shadow-md hover:bg-gray-200">
+            🎮 Funny Gaming Memes
+        </a>
+        <a href="https://www.youtube.com/watch?v=RM72NtLtyd4" target="_blank" class="bg-gray-100 p-4 rounded-lg shadow-md hover:bg-gray-200">
+            🎶 Best Music Mashup Ever
+        </a>
+    </div>
+</section>
+    
+        <!-- Ad Space -->
+    <div class="ad-space mt-6">
+        <p>Adsterra / Google AdSense Ad Here</p>
+    </div>
+    
+    
+    <footer class="relative mt-8 w-full py-6 text-center text-white bg-gray-900">
+    <div class="absolute top-0 left-0 w-full">
+        <svg viewBox="0 0 1440 320" class="w-full" xmlns="http://www.w3.org/2000/svg">
+            <path fill="#222" fill-opacity="1" d="M0,64L48,69.3C96,75,192,85,288,85.3C384,85,480,75,576,74.7C672,75,768,85,864,117.3C960,149,1056,203,1152,202.7C1248,203,1344,149,1392,122.7L1440,96V320H0Z"></path>
+        </svg>
+    </div>
+    <p class="relative z-10">Created with ❤️ by <strong href="https://www.instagram.com/">Anas Khan</strong></p>
+</footer>
+
+    <script>
+        const tasks = [
+    { text: "🎨 Draw something random", link: "https://quickdraw.withgoogle.com/" },
+    { text: "🎮 Play a retro game online", link: "https://classicreload.com/" },
+    { text: "🎵 Listen to a new music genre", link: "https://everynoise.com/" },
+    { text: "📚 Read a random Wikipedia page", link: "https://en.wikipedia.org/wiki/Special:Random" },
+    { text: "🚀 Try a science experiment at home", link: "https://www.stevespanglerscience.com/lab/experiments/" },
+    { text: "🧩 Solve a Sudoku puzzle", link: "https://sudoku.com/" },
+    { text: "🏋️ Do 10 push-ups now!", link: "https://www.youtube.com/watch?v=IODxDxX7oi4" },
+    { text: "💻 Learn a new keyboard shortcut", link: "https://defkey.com/" },
+    { text: "🎤 Try rapping for 30 seconds", link: "https://www.youtube.com/watch?v=VP5zbLtv91E" },
+    { text: "📸 Take a creative photo", link: "https://www.instagram.com/" },
+    { text: "🍔 Try making a new recipe", link: "https://www.allrecipes.com/" },
+    { text: "🎭 Watch a stand-up comedy", link: "https://www.youtube.com/results?search_query=stand+up+comedy" },
+    { text: "📝 Write a short poem", link: "https://www.poem-generator.org.uk/" },
+    { text: "🎬 Generate a movie suggestion", link: "https://agoodmovietowatch.com/random/" },
+    { text: "🎤 Sing a karaoke song", link: "https://www.karafun.com/karaoke/" },
+    { text: "🧑‍🎨 Try a pixel art generator", link: "https://www.pixilart.com/draw" },
+    { text: "🎯 Play a browser game", link: "https://www.crazygames.com/" },
+    { text: "🐍 Play the Google Snake Game", link: "https://www.google.com/search?q=play+snake" },
+    { text: "📖 Read a free book", link: "https://www.gutenberg.org/" },
+    { text: "🎲 Play a dice rolling game", link: "https://www.random.org/dice/" },
+    { text: "🌎 Explore Google Earth", link: "https://earth.google.com/" },
+    { text: "📢 Create a meme", link: "https://imgflip.com/memegenerator" },
+    { text: "🎵 Make music with AI", link: "https://www.beepbox.co/" },
+    { text: "🐶 Look at cute dog pictures", link: "https://unsplash.com/s/photos/dog" },
+    { text: "🧠 Try a brain teaser", link: "https://www.brainzilla.com/brain-teasers/" },
+    { text: "👽 Generate a sci-fi story", link: "https://www.plot-generator.org.uk/science-fiction/" },
+    { text: "🖍 Doodle something random", link: "https://www.autodraw.com/" },
+    { text: "🚴 Do 5 jumping jacks", link: "#" },
+    { text: "🗿 Read a conspiracy theory", link: "https://www.reddit.com/r/conspiracy/" },
+    { text: "🎙 Try an AI voice generator", link: "https://fakeyou.com/" },
+    { text: "🌌 Learn a fun fact about space", link: "https://apod.nasa.gov/apod/astropix.html" },
+    { text: "🧬 Play with DNA sequencing", link: "https://phylogenyexplorerproject.org/" },
+    { text: "🌎 Find a random place on Earth", link: "https://www.mapcrunch.com/" },
+    { text: "🎭 Make a funny face in the mirror", link: "#" },
+    { text: "📜 Generate a Shakespearean insult", link: "https://www.pangloss.com/seidel/Shaker/index.html" },
+    { text: "🛠 Try an online puzzle", link: "https://www.jigsawexplorer.com/" },
+    { text: "🃏 Play a card game", link: "https://playingcards.io/" },
+    { text: "📱 Organize your phone apps", link: "#" },
+    { text: "🎵 Make a random song remix", link: "https://incredibox.com/" },
+    { text: "🎨 Try an AI painting tool", link: "https://deepdreamgenerator.com/" },
+    { text: "📝 Generate a random joke", link: "https://icanhazdadjoke.com/" },
+    { text: "🚗 Design your dream car", link: "https://www.3dtuning.com/en-US/" },
+    { text: "💡 Learn a cool life hack", link: "https://www.lifehack.org/" },
+    { text: "🧘 Try a quick meditation", link: "https://www.headspace.com/meditation/meditation-for-beginners" },
+    { text: "🃏 Generate a random superpower", link: "https://www.superpowergenerator.com/" },
+    { text: "🎮 Find a new indie game", link: "https://itch.io/randomizer" },
+    { text: "🦕 Play the Google Dinosaur Game", link: "chrome://dino/" },
+    { text: "🎭 Generate a random movie plot", link: "https://www.scifiideas.com/random-story-idea-generator/" },
+    { text: "🌟 Learn a magic trick", link: "https://www.goodtricks.net/" },
+    { text: "🍔 Find out your fast food personality", link: "https://www.buzzfeed.com/quizzes" },
+    { text: "🐸 Watch a funny frog video", link: "https://www.youtube.com/results?search_query=funny+frog" },
+    { text: "🎶 Generate a random rap lyric", link: "https://www.song-lyrics-generator.org.uk/rap/" },
+    { text: "🛩 Guess flight locations in real-time", link: "https://www.flightradar24.com/" },
+    { text: "🌴 Generate your pirate name", link: "https://www.piratequiz.com/" },
+    { text: "🧠 Test your reaction time", link: "https://humanbenchmark.com/tests/reactiontime" }
+];
+        function spinWheel() {
+            const wheel = document.getElementById('wheel');
+            const result = document.getElementById('result');
+            const tutorial = document.getElementById('tutorial');
+            const spinBtn = document.getElementById('spinBtn');
+
+            spinBtn.disabled = true;
+            result.style.opacity = 0;
+            tutorial.style.display = "none";
+
+            const randomTask = tasks[Math.floor(Math.random() * tasks.length)];
+            const rotations = 4 + Math.random() * 3;
+            const finalAngle = (rotations * 360) + Math.floor(Math.random() * 360);
+            wheel.style.transform = `rotate(${finalAngle}deg)`;
+
+            setTimeout(() => {
+                result.textContent = randomTask.text;
+                result.style.opacity = 1;
+                tutorial.href = randomTask.link;
+                tutorial.style.display = "block";
+                spinBtn.disabled = false;
+            }, 3000);
+        }
+
+        document.getElementById('spinBtn').addEventListener('click', spinWheel);
+    </script>
+
+</body>
+</html>

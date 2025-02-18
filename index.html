@@ -384,29 +384,8 @@
         document.getElementById('spinBtn').addEventListener('click', spinWheel);
 
 
-            // Confetti explosion
-            confetti({
-                particleCount: 100,
-                spread: 70,
-                origin: { y: 0.6 }
-            });
-
-            // Play confetti sound
-            document.getElementById('confettiSound').play();
-        }, 3000);
-    }
-
-    document.getElementById('spinBtn').addEventListener('click', spinWheel);
-
-    // Preloader
-    window.onload = function () {
-        setTimeout(() => {
-            document.getElementById('preloader').style.opacity = '0';
-            setTimeout(() => {
-                document.getElementById('preloader').style.display = 'none';
-            }, 500);
-        }, 1500);
-    };
+           
+   
 
 
 

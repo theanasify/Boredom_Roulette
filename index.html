@@ -392,7 +392,7 @@
             tutorial.style.display = "none";
 
             const randomTask = tasks[Math.floor(Math.random() * tasks.length)];
-            const rotations = 8 + Math.random() * 6;
+            const rotations = 8 + Math.random() * 3;
             const finalAngle = (rotations * 360) + Math.floor(Math.random() * 360);
             wheel.style.transform = `rotate(${finalAngle}deg)`;
 

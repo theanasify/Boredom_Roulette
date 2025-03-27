@@ -253,7 +253,7 @@
 <script type="text/javascript" src="//scorchpompositydeadly.com/fd1d030a9a97554183e3f02360b4eb55/invoke.js"></script>
 
 
-    <footer class="relative mt-8 w-full py-6 text-center text-white bg-gray-900">}
+    <footer class="relative mt-8 w-full py-6 text-center text-white bg-gray-900">
     <p class="relative z-10">Created with ❤️ by <a  href="https://www.instagram.com/theanasify">Anas Khan</a></p>
 </footer>
 
@@ -364,4 +364,36 @@ const tasks = [
         function spinWheel() {
             const wheel = document.getElementById('wheel');
             const result = document.getElementById('result');
-            const tutorial =
+            const tutorial = document.getElementById('tutorial');
+            const spinBtn = document.getElementById('spinBtn');
+
+            spinBtn.disabled = true;
+            result.style.opacity = 0;
+            tutorial.style.display = "none";
+
+            const randomTask = tasks[Math.floor(Math.random() * tasks.length)];
+            const rotations = 8 + Math.random() * 3;
+            const finalAngle = (rotations * 360) + Math.floor(Math.random() * 360);
+            wheel.style.transform = `rotate(${finalAngle}deg)`;
+
+            setTimeout(() => {
+                result.textContent = randomTask.text;
+                result.style.opacity = 1;
+                tutorial.href = randomTask.link;
+                tutorial.style.display = "block";
+                spinBtn.disabled = false;
+            }, 3000);
+        }
+
+        document.getElementById('spinBtn').addEventListener('click', spinWheel);
+
+
+
+
+
+
+
+    </script>
+
+</body>
+</html>
